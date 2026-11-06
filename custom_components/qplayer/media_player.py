@@ -21,9 +21,9 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.util import dt as dt_util
 
-from . import QPlayerCoordinator
 from .api import QPlayerError
 from .const import DOMAIN
+from .coordinator import QPlayerCoordinator
 
 BROWSE_LIMIT = 100
 ROOT_ID = "root"

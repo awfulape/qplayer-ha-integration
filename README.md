@@ -4,20 +4,39 @@ Controls QPlayer2 over its HTTP API as a `media_player` entity.
 
 ## 1. Enable the API in the player
 
-Edit `~/.config/qplayer/qplayer-settings-v1.json` (player closed):
+In QPlayer, open Settings (gear icon in the title bar) → API:
 
-```json
-"api": { "enabled": true, "bind": "0.0.0.0", "port": 8765, "token": "<secret>" }
-```
+- Enable HTTP API
+- Bind address: `0.0.0.0` (reachable from the LAN) or `127.0.0.1` (local only)
+- Port: `8765`
+- Token: press Generate (or enter your own); a token is required when the API is enabled
 
-If `token` is empty, the player generates one on start; read it from the file. Restart the player.
-The API is plain HTTP; use only on a trusted LAN.
+Press Save. The API is plain HTTP; use only on a trusted LAN. If Windows asks about
+the firewall, allow QPlayer on private networks.
 
 ## 2. Install
 
-Copy `custom_components/qplayer` into HA's `config/custom_components/` and restart HA
-(or add this repo to HACS as a custom repository). Then: Settings → Devices & services →
-Add integration → QPlayer → host, port, token.
+### Marketplace (Home Assistant 2026.11 or newer)
+
+HACS is built into Home Assistant as the Marketplace. Settings → Marketplace →
+**Add from link** → enter this repository's GitHub URL (`owner/repository`) → Add.
+Connect your GitHub account when asked (required for custom repositories). Then open
+the repository page, select Install and restart Home Assistant if a repair asks for it.
+Updates appear under Settings → Updates when a new release is published.
+
+### HACS (Home Assistant 2026.10 or older)
+
+1. HACS → ⋮ → Custom repositories → add this repository's GitHub URL, type Integration.
+2. Download QPlayer from HACS and restart Home Assistant.
+3. Updates appear in HACS when a new release is published.
+
+### Manual
+
+Copy `custom_components/qplayer` into HA's `config/custom_components/` and restart HA.
+
+## 3. Add the integration
+
+Settings → Devices & services → Add integration → QPlayer → host, port, token.
 
 ## Features
 

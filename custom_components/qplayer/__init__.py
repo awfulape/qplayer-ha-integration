@@ -2,22 +2,22 @@
 
 from __future__ import annotations
 
-from datetime import timedelta
 import logging
-from typing import Any
 
 import voluptuous as vol
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_PORT, CONF_TOKEN, Platform
 from homeassistant.core import HomeAssistant, ServiceCall
-from homeassistant.exceptions import ConfigEntryAuthFailed, HomeAssistantError
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 import homeassistant.helpers.config_validation as cv
 
-from .api import QPlayerAuthError, QPlayerClient, QPlayerError
-from .const import DOMAIN, SCAN_INTERVAL_SECONDS
+# Imported at module load so HA does not import the platform inside the event loop.
+from . import media_player as _media_player  # noqa: F401
+from .api import QPlayerClient
+from .const import DOMAIN
+from .coordinator import QPlayerCoordinator
 
 _LOGGER = logging.getLogger(__name__)
 PLATFORMS = [Platform.MEDIA_PLAYER]
@@ -31,28 +31,6 @@ PLAY_SEARCH_SCHEMA = vol.Schema(
         vol.Optional("kind"): vol.In(["music", "radio"]),
     }
 )
-
-
-class QPlayerCoordinator(DataUpdateCoordinator[dict[str, Any]]):
-    def __init__(
-        self, hass: HomeAssistant, entry: ConfigEntry, client: QPlayerClient
-    ) -> None:
-        super().__init__(
-            hass,
-            _LOGGER,
-            name=DOMAIN,
-            config_entry=entry,
-            update_interval=timedelta(seconds=SCAN_INTERVAL_SECONDS),
-        )
-        self.client = client
-
-    async def _async_update_data(self) -> dict[str, Any]:
-        try:
-            return await self.client.state()
-        except QPlayerAuthError as err:
-            raise ConfigEntryAuthFailed from err
-        except QPlayerError as err:
-            raise UpdateFailed(str(err)) from err
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:

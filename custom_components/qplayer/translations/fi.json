@@ -1,0 +1,21 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Yhdistä QPlayeriin",
+        "data": {
+          "host": "Osoite",
+          "port": "Portti",
+          "token": "API-tunniste"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Soittimeen ei saada yhteyttä (onko API päällä?)",
+      "invalid_auth": "Virheellinen API-tunniste"
+    },
+    "abort": {
+      "already_configured": "Soitin on jo lisätty"
+    }
+  }
+}

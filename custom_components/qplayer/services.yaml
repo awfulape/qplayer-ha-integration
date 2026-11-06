@@ -1,0 +1,26 @@
+play_search:
+  fields:
+    entity_id:
+      required: false
+      selector:
+        entity:
+          integration: qplayer
+          domain: media_player
+    query:
+      required: true
+      example: "yle x"
+      selector:
+        text:
+    playlist:
+      required: false
+      selector:
+        number:
+          min: 0
+          mode: box
+    kind:
+      required: false
+      selector:
+        select:
+          options:
+            - music
+            - radio

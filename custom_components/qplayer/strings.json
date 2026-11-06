@@ -1,0 +1,21 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to QPlayer",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "token": "API token"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot connect to the player (is the API enabled?)",
+      "invalid_auth": "Invalid API token"
+    },
+    "abort": {
+      "already_configured": "This player is already configured"
+    }
+  }
+}

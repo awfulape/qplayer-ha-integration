@@ -3,6 +3,7 @@
   "name": "QPlayer",
   "codeowners": [],
   "config_flow": true,
+  "dependencies": ["media_player", "media_source"],
   "documentation": "https://github.com/",
   "integration_type": "device",
   "iot_class": "local_polling",

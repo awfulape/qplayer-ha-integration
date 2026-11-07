@@ -4,7 +4,9 @@ from __future__ import annotations
 
 from typing import Any
 
+from homeassistant.components import media_source
 from homeassistant.components.media_player import (
+    BrowseError,
     BrowseMedia,
     MediaPlayerEntity,
     MediaPlayerEntityFeature,
@@ -12,7 +14,7 @@ from homeassistant.components.media_player import (
     MediaType,
 )
 from homeassistant.components.media_player.browse_media import (
-    BrowseError,
+    async_process_play_media_url,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -189,6 +191,14 @@ class QPlayerMediaPlayer(CoordinatorEntity[QPlayerCoordinator], MediaPlayerEntit
         self, media_type: str, media_id: str, **kwargs: Any
     ) -> None:
         client = self.coordinator.client
+        if media_source.is_media_source_id(media_id):
+            resolved = await media_source.async_resolve_media(
+                self.hass, media_id, self.entity_id
+            )
+            media_id = async_process_play_media_url(self.hass, resolved.url)
+        if media_id.startswith(("http://", "https://")):
+            await self._cmd("play_url", url=media_id)
+            return
         if media_id.startswith("item:"):
             _, playlist, index = media_id.split(":")
             await self._cmd("play_item", playlist=int(playlist), index=int(index))
